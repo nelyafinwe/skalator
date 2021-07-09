@@ -34,7 +34,7 @@ pipeline {
 
         stage('deploy build') {
             steps {
-                sh "gsutil cp app/build/libs/app.tar ${testBucket}/app.tar"
+                sh "gsutil cp app/build/libs/app.jar ${testBucket}/app.jar"
             }
         }
 
