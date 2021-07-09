@@ -1,10 +1,11 @@
+def testBucket = "gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/test"
+
+
 pipeline {
     agent any
     tools {
         gradle 'gradle69' 
     }
-
-    def testBucket = 'gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/test'
 
     stages {
         stage('check version') {
@@ -12,6 +13,12 @@ pipeline {
                 sh 'gradle -version'
             }
         }
+
+        stage('check variable') {
+            steps {
+                sh "echo ${testBucket}"
+            }
+        }        
 
         stage('build') {
             steps {
@@ -23,6 +30,6 @@ pipeline {
             steps {
                 sh 'gradle run'
             }
-        }                
+        }
     }
 }
