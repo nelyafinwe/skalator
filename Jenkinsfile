@@ -7,6 +7,10 @@ pipeline {
         gradle 'gradle69' 
     }
 
+    environment {
+        secret_path = credentials('jenkins')
+    }    
+
     stages {
         stage('check version') {
             steps {
@@ -30,10 +34,12 @@ pipeline {
             steps {
                 sh 'gradle run'
             }
+
         }
 
         stage('deploy build') {
             steps {
+                sh "gcloud auth activate-service-account jenkins@total-amp-316818.iam.gserviceaccount.com --key-file=${secret_path} --project=total-amp-316818"
                 sh "gsutil cp app/build/libs/app.jar ${testBucket}/app.jar"
             }
         }
