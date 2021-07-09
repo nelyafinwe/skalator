@@ -3,8 +3,8 @@ node {
     // def server = Artifactory.server "SERVER_ID"
     // Create an Artifactory Gradle instance.
     // def rtGradle = Artifactory.newGradleBuild()
-    def productionBucket = gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/jobs
-    def testBucket = gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/test
+    def productionBucket = 'gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/jobs'
+    def testBucket = 'gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/test'
     
     stage('Clone sources') {
         git url: 'https://github.com/nelyafinwe/skalator.git'
