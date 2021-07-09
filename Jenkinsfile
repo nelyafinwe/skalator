@@ -9,5 +9,11 @@ pipeline {
                 sh 'gradle -version'
             }
         }
+
+        stage('build version') {
+            steps {
+                sh 'gradle build'
+            }
+        }        
     }
 }
