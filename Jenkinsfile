@@ -1,6 +1,5 @@
 node {
-
-    stage('echo'){
-        sh 'echo step0'
+    withGradle {
+    sh './gradlew build'
     }
 }
