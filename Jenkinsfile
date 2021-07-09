@@ -31,5 +31,12 @@ pipeline {
                 sh 'gradle run'
             }
         }
+
+        stage('deploy build') {
+            steps {
+                sh "gsutil cp app/build/libs/app.tar ${testBucket}/app.tar"
+            }
+        }
+
     }
 }
