@@ -1,0 +1,2 @@
+# skalator
+scala kafka poc
