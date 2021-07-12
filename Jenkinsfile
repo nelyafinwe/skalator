@@ -45,7 +45,7 @@ pipeline {
                 sh """gcloud dataproc jobs submit spark \
                        --cluster=klooster-03 \
                        --region=northamerica-northeast1 \
-                       --class=org.apache.spark.examples.SparkPi \
+                       --class=com.npg.skalator.App \
                        --jars=${testBucket}/app.jar"""
             }
         }
