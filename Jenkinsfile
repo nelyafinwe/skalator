@@ -47,6 +47,7 @@ pipeline {
                        --cluster=klooster-03 \
                        --region=northamerica-northeast1 \
                        --class=com.npg.skalator.App \
+                       --properties spark.jars.packages=org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.1 \
                        --jars=${testBucket}/app.jar"""
             }
         }
