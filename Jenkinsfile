@@ -1,4 +1,5 @@
 def testBucket = "gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/test"
+def prodBucket = "gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/jobs"
 
 
 pipeline {
@@ -20,7 +21,8 @@ pipeline {
 
         stage('check variable') {
             steps {
-                sh "echo ${testBucket}"
+                sh "bucket for test deployment = ${testBucket}"
+                sh "bucket for production deployment = ${prodBucket}"
             }
         }        
 
@@ -37,10 +39,28 @@ pipeline {
 
         }
 
-        stage('deploy build') {
+        stage('deploy test build') {
             steps {
                 sh "gcloud auth activate-service-account jenkins@total-amp-316818.iam.gserviceaccount.com --key-file=${secret_path} --project=total-amp-316818"
                 sh "gsutil cp app/build/libs/app.jar ${testBucket}/app.jar"
+            }
+        }
+
+        stage('test build') {
+            steps {
+                sh "gcloud auth activate-service-account jenkins@total-amp-316818.iam.gserviceaccount.com --key-file=${secret_path} --project=total-amp-316818"
+                sh """gcloud dataproc jobs submit spark \
+                       --cluster=klooster-03 \
+                       --region=northamerica-northeast1 \
+                       --class=org.apache.spark.examples.SparkPi \
+                       --jars=${testBucket}/app.jar"""
+            }
+        }
+
+        stage('deploy production build') {
+            steps {
+                sh "gcloud auth activate-service-account jenkins@total-amp-316818.iam.gserviceaccount.com --key-file=${secret_path} --project=total-amp-316818"
+                sh "gsutil cp app/build/libs/app.jar ${prodBucket}/app.jar"
             }
         }
 
