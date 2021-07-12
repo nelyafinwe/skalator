@@ -10,3 +10,6 @@ gradlew.bat
 
 # osx
 .DS_Store
+
+# intellij
+.idea

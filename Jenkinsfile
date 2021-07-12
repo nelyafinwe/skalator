@@ -21,8 +21,8 @@ pipeline {
 
         stage('check variable') {
             steps {
-                sh "bucket for test deployment = ${testBucket}"
-                sh "bucket for production deployment = ${prodBucket}"
+                sh "echo bucket for test deployment = ${testBucket}"
+                sh "echo bucket for production deployment = ${prodBucket}"
             }
         }        
 
