@@ -43,12 +43,13 @@ pipeline {
             steps {
                 sh "gcloud auth activate-service-account jenkins@total-amp-316818.iam.gserviceaccount.com --key-file=${secret_path} --project=total-amp-316818"
                 sh """gcloud dataproc jobs submit spark \
-                       --id jenkins-was-here \
+                       --id jenkins-\$(date +%s) \
                        --cluster=klooster-03 \
                        --region=northamerica-northeast1 \
                        --class=com.npg.skalator.App \
-                       --properties spark.jars.packages=org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.1 \
-                       --jars=${testBucket}/app.jar"""
+                       --jars=${testBucket}/app.jar \
+                       --properties spark.jars.packages=org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.1
+                       """
             }
         }
 
