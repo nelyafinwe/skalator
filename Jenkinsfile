@@ -32,13 +32,6 @@ pipeline {
             }
         }  
 
-        stage('run') {
-            steps {
-                sh 'gradle run'
-            }
-
-        }
-
         stage('deploy test build') {
             steps {
                 sh "gcloud auth activate-service-account jenkins@total-amp-316818.iam.gserviceaccount.com --key-file=${secret_path} --project=total-amp-316818"
