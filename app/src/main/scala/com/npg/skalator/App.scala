@@ -19,14 +19,12 @@ object App {
       .option("kafka.bootstrap.servers", "klooster-03-w-0:9092")
       .option("subscribe", "test")
       .option("enable.auto.commit","true")
-
       .load()
     df.printSchema()
 
-    val df2 = df.selectExpr("CAST(key as STRING)",
-      "CAST(value as STRING)", "topic")
-
-    println(df2.count())
+    val df2 = df.selectExpr("CAST(key as STRING)", "CAST(value as STRING)", "topic")
+    val output_path = "gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/test/out"
+    df2.rdd.saveAsTextFile(output_path)
 
   }
 
