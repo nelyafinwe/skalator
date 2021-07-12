@@ -43,6 +43,7 @@ pipeline {
             steps {
                 sh "gcloud auth activate-service-account jenkins@total-amp-316818.iam.gserviceaccount.com --key-file=${secret_path} --project=total-amp-316818"
                 sh """gcloud dataproc jobs submit spark \
+                       --id jenkins-was-here \
                        --cluster=klooster-03 \
                        --region=northamerica-northeast1 \
                        --class=com.npg.skalator.App \
