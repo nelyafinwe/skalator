@@ -3,10 +3,33 @@
  */
 package com.npg.skalator
 
+import org.apache.spark.sql.SparkSession
+
 object App {
+
   def main(args: Array[String]): Unit = {
-    println(greeting())
+    val ss = SparkSession
+      .builder
+      .appName("Spark Kafka Consumer n_n)")
+      .getOrCreate()
+
+    val df = ss
+      .read
+      .format("kafka")
+      .option("kafka.bootstrap.servers", "klooster-03-w-0:9092")
+      .option("subscribe", "test")
+      .option("enable.auto.commit","true")
+
+      .load()
+    df.printSchema()
+
+    val df2 = df.selectExpr("CAST(key as STRING)",
+      "CAST(value as STRING)", "topic")
+
+    println(df2.count())
+
   }
 
   def greeting(): String = "Hello, world!"
+
 }
