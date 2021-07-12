@@ -2,7 +2,11 @@
 .gradle
 gradle
 app/build
+gradlew
+gradlew.bat
 
 # secrets
 .secrets
 
+# osx
+.DS_Store
