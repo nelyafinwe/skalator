@@ -20,8 +20,8 @@ repositories {
 }
 
 dependencies {
-    // Use Scala 2.13 in our library project
-    implementation 'org.scala-lang:scala-library:2.13.3'
+    // Use Scala 2.12 in our library project
+    implementation 'org.scala-lang:scala-library:2.12.3'
 
     // https://mvnrepository.com/artifact/org.apache.spark/spark-core
     implementation group: 'org.apache.spark', name: 'spark-core_2.12', version: '3.1.1'
@@ -37,11 +37,11 @@ dependencies {
 
     // Use Scalatest for testing our library
     testImplementation 'junit:junit:4.13'
-    testImplementation 'org.scalatest:scalatest_2.13:3.2.2'
-    testImplementation 'org.scalatestplus:junit-4-12_2.13:3.2.2.0'
+    testImplementation 'org.scalatest:scalatest_2.12:3.2.2'
+    testImplementation 'org.scalatestplus:junit-4-12_2.12:3.2.2.0'
 
     // Need scala-xml at test runtime
-    testRuntimeOnly 'org.scala-lang.modules:scala-xml_2.13:1.2.0'
+    testRuntimeOnly 'org.scala-lang.modules:scala-xml_2.12:1.2.0'
 }
 
 application {
