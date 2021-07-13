@@ -4,7 +4,7 @@
 package com.npg.skalator
 
 import org.apache.spark.sql.SparkSession
-
+import java.sql.Timestamp
 object App {
 
   def main(args: Array[String]): Unit = {
@@ -19,6 +19,8 @@ object App {
 
     val topicToUse = args(0)
     val outputPathToUse = args(1)
+    val start = Timestamp.valueOf("2021-07-13T18:45:17.767Z")
+    val end   = Timestamp.valueOf("2021-07-13T18:45:23.946Z")
 
     val df = ss
       .read
@@ -29,8 +31,12 @@ object App {
       .load()
     df.printSchema()
 
-    val df2 = df.selectExpr("CAST(key as STRING)", "CAST(value as STRING)", "CAST(timestamp as STRING)","topic")
-    df2.rdd.saveAsTextFile(outputPathToUse)
+    val df2 = df.selectExpr("CAST(key as STRING)", "CAST(value as STRING)", "timestamp","topic")
+    val df3 = df2.filter( record => {
+      val thisTimestamp = record.getTimestamp(3)
+      return thisTimestamp.after(start) && thisTimestamp.before(end)
+    })
+    df3.rdd.saveAsTextFile(outputPathToUse)
 
   }
 
