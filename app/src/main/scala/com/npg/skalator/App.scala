@@ -8,6 +8,10 @@ import org.apache.spark.sql.SparkSession
 object App {
 
   def main(args: Array[String]): Unit = {
+    if (args.length != 2){
+      println("Insufficient arguments. arg1=topic, arg2=output_path")
+    }
+
     val ss = SparkSession
       .builder
       .appName("Spark Kafka Consumer n_n)")
