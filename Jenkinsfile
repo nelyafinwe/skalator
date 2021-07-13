@@ -10,9 +10,8 @@ pipeline {
 
     environment {
         secret_path = credentials('jenkins')
+        thisCommit = sh(returnStdout: true, script:'git rev-parse HEAD')
     }    
-
-    def thisCommit = sh(returnStdout: true, script:'git rev-parse HEAD')
 
     stages {
         stage('check version') {
