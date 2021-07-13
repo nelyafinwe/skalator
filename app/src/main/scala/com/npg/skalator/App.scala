@@ -19,8 +19,8 @@ object App {
 
     val topicToUse = args(0)
     val outputPathToUse = args(1)
-    val start = Timestamp.valueOf("2021-07-13T18:45:17.767Z")
-    val end   = Timestamp.valueOf("2021-07-13T18:45:23.946Z")
+    val start = Timestamp.valueOf("2021-07-13 18:45:17.767Z")
+    val end   = Timestamp.valueOf("2021-07-13 18:45:23.946Z")
 
     val df = ss
       .read
