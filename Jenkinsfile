@@ -50,8 +50,7 @@ pipeline {
                        --class=com.npg.skalator.App \
                        --jars=${testBucket}/app-${thisCommit}.jar \
                        --properties spark.jars.packages=org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.1 \
-                       --test \
-                       --${testBucket}/out_app-${thisCommit}
+                       -- test ${testBucket}/out_app-${thisCommit}
                        """
             }
         }
