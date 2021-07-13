@@ -1,7 +1,6 @@
 def testBucket = "gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/test"
 def prodBucket = "gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/jobs"
 
-def thisCommit = sh(returnStdout: true, script:'git rev-parse HEAD')
 
 pipeline {
     agent any
@@ -12,6 +11,8 @@ pipeline {
     environment {
         secret_path = credentials('jenkins')
     }    
+
+    def thisCommit = sh(returnStdout: true, script:'git rev-parse HEAD')
 
     stages {
         stage('check version') {
