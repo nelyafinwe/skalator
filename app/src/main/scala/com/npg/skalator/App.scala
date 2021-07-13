@@ -25,8 +25,6 @@ object App {
       .format("kafka")
       .option("kafka.bootstrap.servers", "klooster-03-w-0:9092")
       .option("subscribe", topicToUse)
-      .option("startingOffsets", """{"topic1":{"0":23,"1":-2},"topic2":{"0":-2}}""")
-      .option("endingOffsets", """{"topic1":{"0":50,"1":-1},"topic2":{"0":-1}}""")
       .option("enable.auto.commit","true")
       .load()
     df.printSchema()
