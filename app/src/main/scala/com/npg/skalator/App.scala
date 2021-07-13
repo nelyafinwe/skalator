@@ -29,7 +29,7 @@ object App {
       .load()
     df.printSchema()
 
-    val df2 = df.selectExpr("CAST(timestamp as STRING)", "CAST(value as STRING)", "offset", "topic")
+    val df2 = df.selectExpr("timestamp", "CAST(value as STRING)", "offset", "topic")
     df2.rdd.saveAsTextFile(outputPathToUse)
 
   }
