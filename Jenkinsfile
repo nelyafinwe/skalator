@@ -10,7 +10,7 @@ pipeline {
 
     environment {
         secret_path = credentials('jenkins')
-        thisCommit = sh(returnStdout: true, script:'git rev-parse HEAD')
+        thisCommit = sh(returnStdout: true, script:'git rev-parse HEAD').trim()
     }    
 
     stages {
