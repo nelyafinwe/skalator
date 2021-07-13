@@ -13,18 +13,20 @@ object App {
       .appName("Spark Kafka Consumer n_n)")
       .getOrCreate()
 
+    val topicToUse = args(0)
+    val outputPathToUse = args(1)
+
     val df = ss
       .read
       .format("kafka")
       .option("kafka.bootstrap.servers", "klooster-03-w-0:9092")
-      .option("subscribe", "test")
+      .option("subscribe", topicToUse)
       .option("enable.auto.commit","true")
       .load()
     df.printSchema()
 
     val df2 = df.selectExpr("CAST(key as STRING)", "CAST(value as STRING)", "topic")
-    val output_path = "gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/test/out"
-    df2.rdd.saveAsTextFile(output_path)
+    df2.rdd.saveAsTextFile(outputPathToUse)
 
   }
 

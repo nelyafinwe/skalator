@@ -1,6 +1,7 @@
 def testBucket = "gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/test"
 def prodBucket = "gs://dataproc-staging-sa-east1-664534573047-ccfoqrdc/jobs"
 
+def thisCommit = sh(returnStdout: true, script:'git rev-parse HEAD')
 
 pipeline {
     agent any
@@ -35,7 +36,7 @@ pipeline {
         stage('deploy test build') {
             steps {
                 sh "gcloud auth activate-service-account jenkins@total-amp-316818.iam.gserviceaccount.com --key-file=${secret_path} --project=total-amp-316818"
-                sh "gsutil cp app/build/libs/app.jar ${testBucket}/app.jar"
+                sh "gsutil cp app/build/libs/app.jar ${testBucket}/app-${thisCommit}.jar"
             }
         }
 
@@ -43,13 +44,22 @@ pipeline {
             steps {
                 sh "gcloud auth activate-service-account jenkins@total-amp-316818.iam.gserviceaccount.com --key-file=${secret_path} --project=total-amp-316818"
                 sh """gcloud dataproc jobs submit spark \
-                       --id jenkins-\$(date +%s) \
+                       --id jenkins-build-${thisCommit}-\$(date +%s) \
                        --cluster=klooster-03 \
                        --region=northamerica-northeast1 \
                        --class=com.npg.skalator.App \
-                       --jars=${testBucket}/app.jar \
-                       --properties spark.jars.packages=org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.1
+                       --jars=${testBucket}/app-${thisCommit}.jar \
+                       --properties spark.jars.packages=org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.1 \
+                       --test \
+                       --${testBucket}/out_app-${thisCommit}
                        """
+            }
+        }
+
+        stage('remove test build output') {
+            steps {
+                sh "gcloud auth activate-service-account jenkins@total-amp-316818.iam.gserviceaccount.com --key-file=${secret_path} --project=total-amp-316818"
+                sh "gsutil rm -r ${testBucket}/out_app-${thisCommit}"
             }
         }
 
