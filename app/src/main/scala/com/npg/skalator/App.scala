@@ -30,13 +30,25 @@ object App {
       .option("enable.auto.commit","true")
       .load()
     df.printSchema()
+    /*
+    root
+     |-- key: binary (nullable = true)
+     |-- value: binary (nullable = true)
+     |-- topic: string (nullable = true)
+     |-- partition: integer (nullable = true)
+     |-- offset: long (nullable = true)
+     |-- timestamp: timestamp (nullable = true)
+     |-- timestampType: integer (nullable = true)
+     */
 
-    val df2 = df.selectExpr("CAST(key as STRING)", "CAST(value as STRING)", "timestamp","topic")
-    val df3 = df2.filter( record => {
-      val thisTimestamp = record.getTimestamp(3)
-      return thisTimestamp.after(start) && thisTimestamp.before(end)
+    val df_timeboxed = df.filter( e => {
+      val thisTimestamp = e.getTimestamp(5)
+      thisTimestamp.after(start) && thisTimestamp.before(end)
     })
-    df3.rdd.saveAsTextFile(outputPathToUse)
+
+    val df2 = df_timeboxed.selectExpr("CAST(key as STRING)", "CAST(value as STRING)", "timestamp","topic")
+
+    df2.rdd.saveAsTextFile(outputPathToUse)
 
   }
 
