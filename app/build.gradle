@@ -35,6 +35,9 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
 
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.1'
+
     // Use Scalatest for testing our library
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.scalatest:scalatest_2.12:3.2.2'

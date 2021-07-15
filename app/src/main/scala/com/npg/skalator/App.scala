@@ -3,14 +3,29 @@
  */
 package com.npg.skalator
 
+import com.fasterxml.jackson.databind.json.JsonMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import org.apache.spark.sql.SparkSession
+
 import java.sql.Timestamp
+
+case class User(name: String, id: String, country: String, employer: String)
+
 object App {
 
   def main(args: Array[String]): Unit = {
-    if (args.length != 2){
+    if (args.length != 4){
       println("Insufficient arguments. arg1=topic, arg2=output_path")
+      println("arg3=timestamp_start, arg2=timestamp_end")
     }
+
+    val mapper = JsonMapper.builder()
+      .addModule(DefaultScalaModule)
+      .build()
+
+    // basic deserialization implementation
+    val jsonString="""{"name":"edward donne", "id":"001", "country": "England", "employer":"MI6"}"""
+    val someUser = mapper.readValue(jsonString,classOf[User])
 
     val ss = SparkSession
       .builder
@@ -19,8 +34,10 @@ object App {
 
     val topicToUse = args(0)
     val outputPathToUse = args(1)
-    val start = Timestamp.valueOf("2021-07-13 18:45:17.767")
-    val end   = Timestamp.valueOf("2021-07-13 18:45:23.946")
+    // expected ("2021-07-13 18:45:17.767")
+    val start = Timestamp.valueOf(args(2))
+    // expected ("2021-07-13 18:45:23.946")
+    val end   = Timestamp.valueOf(args(3))
 
     val df = ss
       .read
@@ -43,7 +60,7 @@ object App {
 
     val df_timeboxed = df.filter( e => {
       val thisTimestamp = e.getTimestamp(5)
-      thisTimestamp.after(start) && thisTimestamp.before(end)
+      thisTimestamp.compareTo(start)>=0  && thisTimestamp.before(end)
     })
 
     val df2 = df_timeboxed.selectExpr("CAST(key as STRING)", "CAST(value as STRING)", "timestamp","topic")
